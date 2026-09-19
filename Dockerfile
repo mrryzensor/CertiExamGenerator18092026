@@ -22,9 +22,9 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install production dependencies and tsx for TypeScript server
+# Install production dependencies
 COPY package*.json ./
-RUN npm ci --omit=dev && npm install tsx
+RUN npm ci --omit=dev
 
 # Copy compiled React frontend
 COPY --from=builder /app/dist ./dist
