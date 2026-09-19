@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
-import { createServer as createViteServer } from 'vite';
 import { DATA_DIR, ensureDirectories } from './config.js';
 import { seedInitialData } from './seed.js';
 import templatesRouter from './routes/templates.js';
@@ -42,14 +41,17 @@ app.get('/api/health', (req, res) => {
 async function startServer() {
   await seedInitialData();
 
-  if (process.env.NODE_ENV === 'production') {
+  const isProd = process.env.NODE_ENV?.trim().toLowerCase() === 'production';
+
+  if (isProd) {
     const distPath = path.resolve(process.cwd(), 'dist');
     app.use(express.static(distPath));
-    app.get('*', (req, res) => {
+    app.use((req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
   } else {
-    // Integrate Vite as middleware in development for fast HMR on port 3000
+    // Integrate Vite dynamically in development only for fast HMR on port 3000
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
