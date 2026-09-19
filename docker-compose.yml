@@ -1,0 +1,19 @@
+services:
+  certiexam:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: certiexam_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATA_DIR=/app/data
+    volumes:
+      - certiexam_data:/app/data
+
+volumes:
+  certiexam_data:
+    name: certiexam_persistent_data

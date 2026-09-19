@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+build/
+
+# Local Environment & Secrets
+.env
+.env.local
+.env.*.local
+
+# Physical Persistent Storage (kept locally, mounted via volume in production)
+data/
+!data/.gitkeep
+
+# Logs & temporary files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Editor & OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
