@@ -4,9 +4,12 @@
 FROM node:24-bookworm-slim AS builder
 WORKDIR /app
 
+# Ensure devDependencies are installed during build stage regardless of host/Coolify flags
+ENV NODE_ENV=development
+
 # Copy dependency definitions
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --include=dev
 
 # Copy project files and compile Vite build
 COPY . .
